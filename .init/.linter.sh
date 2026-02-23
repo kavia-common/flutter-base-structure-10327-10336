@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /home/kavia/workspace/code-generation/flutter-base-structure-10327-10336/flutter_frontend
+flutter analyze
+
