@@ -4,8 +4,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_frontend/main.dart';
 
 void main() {
-  testWidgets('App starts on Login screen', (WidgetTester tester) async {
+  testWidgets('App starts on Login screen (after prefs resolve)',
+      (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
+
+    // App shows a lightweight loading scaffold while SharedPreferences is read.
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    await tester.pumpAndSettle();
 
     expect(find.text('Login'), findsOneWidget);
     expect(find.text('Username'), findsOneWidget);
@@ -16,6 +22,7 @@ void main() {
   testWidgets('Shows validation error on empty submit',
       (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
 
     await tester.tap(find.widgetWithText(FilledButton, 'Login'));
     await tester.pump();
@@ -26,6 +33,7 @@ void main() {
   testWidgets('Navigates to Calculator on non-empty credentials',
       (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(TextField).at(0), 'user');
     await tester.enterText(find.byType(TextField).at(1), 'pass');
@@ -39,10 +47,12 @@ void main() {
     // Initial display should show 0.
     expect(find.text('0'), findsWidgets);
 
-    // Verify a couple of buttons exist.
+    // Verify key buttons exist.
     expect(find.text('C'), findsOneWidget);
     expect(find.text('='), findsOneWidget);
     expect(find.text('÷'), findsOneWidget);
     expect(find.text('×'), findsOneWidget);
+    expect(find.text('+'), findsOneWidget);
+    expect(find.text('−'), findsOneWidget);
   });
 }
