@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_frontend/main.dart';
 
@@ -13,7 +13,8 @@ void main() {
     expect(find.widgetWithText(FilledButton, 'Login'), findsOneWidget);
   });
 
-  testWidgets('Shows validation error on empty submit', (WidgetTester tester) async {
+  testWidgets('Shows validation error on empty submit',
+      (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
     await tester.tap(find.widgetWithText(FilledButton, 'Login'));
@@ -22,7 +23,8 @@ void main() {
     expect(find.text('Please enter username and password.'), findsOneWidget);
   });
 
-  testWidgets('Navigates to Calculator on non-empty credentials', (WidgetTester tester) async {
+  testWidgets('Navigates to Calculator on non-empty credentials',
+      (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
     await tester.enterText(find.byType(TextField).at(0), 'user');
@@ -31,7 +33,16 @@ void main() {
     await tester.tap(find.widgetWithText(FilledButton, 'Login'));
     await tester.pumpAndSettle();
 
+    // AppBar title
     expect(find.text('Calculator'), findsOneWidget);
-    expect(find.text('Calculator screen (to be implemented).'), findsOneWidget);
+
+    // Initial display should show 0.
+    expect(find.text('0'), findsWidgets);
+
+    // Verify a couple of buttons exist.
+    expect(find.text('C'), findsOneWidget);
+    expect(find.text('='), findsOneWidget);
+    expect(find.text('÷'), findsOneWidget);
+    expect(find.text('×'), findsOneWidget);
   });
 }
