@@ -4,13 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_frontend/main.dart';
 
 void main() {
-  testWidgets('App starts on Login screen (after prefs resolve)',
-      (WidgetTester tester) async {
+  testWidgets('App starts on Login screen', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
-
-    // App shows a lightweight loading scaffold while SharedPreferences is read.
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
     await tester.pumpAndSettle();
 
     expect(find.text('Login'), findsOneWidget);
@@ -19,7 +14,7 @@ void main() {
     expect(find.widgetWithText(FilledButton, 'Login'), findsOneWidget);
   });
 
-  testWidgets('Shows validation error on empty submit',
+  testWidgets('Shows field-level validation errors on empty submit',
       (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
     await tester.pumpAndSettle();
@@ -27,7 +22,8 @@ void main() {
     await tester.tap(find.widgetWithText(FilledButton, 'Login'));
     await tester.pump();
 
-    expect(find.text('Please enter username and password.'), findsOneWidget);
+    expect(find.text('Username is required'), findsOneWidget);
+    expect(find.text('Password is required'), findsOneWidget);
   });
 
   testWidgets('Navigates to Calculator on non-empty credentials',
@@ -47,12 +43,16 @@ void main() {
     // Initial display should show 0.
     expect(find.text('0'), findsWidgets);
 
-    // Verify key buttons exist.
+    // Verify a representative set of buttons exist (complete grid is present).
     expect(find.text('C'), findsOneWidget);
+    expect(find.text('DEL'), findsOneWidget);
+    expect(find.text('±'), findsOneWidget);
     expect(find.text('='), findsOneWidget);
     expect(find.text('÷'), findsOneWidget);
     expect(find.text('×'), findsOneWidget);
     expect(find.text('+'), findsOneWidget);
     expect(find.text('−'), findsOneWidget);
+    expect(find.text('.'), findsOneWidget);
+    expect(find.text('9'), findsOneWidget);
   });
 }
