@@ -8,7 +8,8 @@ void main() {
     await tester.pumpWidget(const MyApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('Login'), findsOneWidget);
+    // AppBar title (avoid ambiguity with the 'Login' button text).
+    expect(find.widgetWithText(AppBar, 'Login'), findsOneWidget);
     expect(find.text('Username'), findsOneWidget);
     expect(find.text('Password'), findsOneWidget);
     expect(find.widgetWithText(FilledButton, 'Login'), findsOneWidget);
